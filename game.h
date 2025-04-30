@@ -5,10 +5,10 @@
 
 class Game {
 private:
+    vector<Stock*> market;
     QDate startDate;
     QDate currDay;
     int timeStep;
-    vector<Stock*> market;
 
 public:
     // Constructor Declaration

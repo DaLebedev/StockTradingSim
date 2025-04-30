@@ -1,4 +1,5 @@
 #include "userportfolio.h"
+#include <QDebug>
 
 // Constructor
 UserPortfolio::UserPortfolio(float balance)
@@ -28,6 +29,8 @@ void UserPortfolio::buyShares(Stock& stock, int numShares) {
         if (balance >= cost) {
             userShares[&stock] += numShares;
             balance -= cost;
+            stock.setNumShares(stock.getNumShares() - numShares);
+            qInfo() << "Bought " << numShares << " shares of " << stock.getName() << " for " << cost;
         }
     }
 }
@@ -39,9 +42,14 @@ void UserPortfolio::sellShares(Stock& stock, int numShares) {
         if (userShares[&stock] > numShares) {
             userShares[&stock] -= numShares;
             balance += profit;
+            stock.setNumShares(stock.getNumShares() + numShares);
+            qInfo() << "Sold " << numShares << " shares of " << stock.getName() << " for " << profit;
+
         } else if (userShares[&stock] == numShares) {
             userShares.erase(&stock);
             balance += profit;
+            stock.setNumShares(stock.getNumShares() + numShares);
+            qInfo() << "Sold " << numShares << " shares of " << stock.getName() << " for " << profit;
         }
     }
 }

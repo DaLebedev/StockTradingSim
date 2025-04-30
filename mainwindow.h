@@ -3,8 +3,12 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QLabel>
+#include <QtCharts/QLineSeries>
 #include "game.h"
 #include "userportfolio.h"
+#include "stockgraph.h"
+#include "stockcard.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +21,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    // Constructor Declaratios
+    // Constructor Declarations
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -27,12 +31,19 @@ private:
     Game* game;
     QTimer* gameTimer;
     UserPortfolio* userPortfolio;
+    QMap<Stock*, StockCard*> stockCards;
+    QMap<Stock*, StockGraph*> stockGraphs;
 
     // Function Declarations
-    void updateGameDay();
-    void displayStocks(vector<Stock*> stocks);
+    QWidget* createStockCard(Stock* stock);
+    QWidget* createGraph(Stock* stock);
+    void displayStocks(vector<Stock*> stocks);    
+    void displayPortfolio(UserPortfolio portfolio);
 
 private slots:
     void startButtonClicked();
+    void updateGameDay();
+    void buyStock(Stock* stock, int quantity);
+    void sellStock(Stock* stock, int quantity);
 };
 #endif // MAINWINDOW_H

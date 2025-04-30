@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>589</width>
-    <height>482</height>
+    <width>1200</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,21 +19,21 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>591</width>
-      <height>481</height>
+      <width>1200</width>
+      <height>675</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="startPage">
      <widget class="QLabel" name="startLabel">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>120</y>
-        <width>121</width>
-        <height>41</height>
+        <x>475</x>
+        <y>225</y>
+        <width>125</width>
+        <height>35</height>
        </rect>
       </property>
       <property name="text">
@@ -43,23 +43,23 @@
      <widget class="QLineEdit" name="startEdit">
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>127</y>
-        <width>121</width>
-        <height>31</height>
+        <x>599</x>
+        <y>225</y>
+        <width>100</width>
+        <height>35</height>
        </rect>
       </property>
       <property name="text">
-       <string>10000</string>
+       <string>1000</string>
       </property>
      </widget>
      <widget class="QPushButton" name="startButton">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>270</y>
-        <width>151</width>
-        <height>51</height>
+        <x>525</x>
+        <y>350</y>
+        <width>150</width>
+        <height>50</height>
        </rect>
       </property>
       <property name="text">
@@ -67,7 +67,31 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="gamePage"/>
+    <widget class="QWidget" name="gamePage">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>1180</width>
+        <height>565</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1178</width>
+         <height>563</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

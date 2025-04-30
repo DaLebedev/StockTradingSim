@@ -1,9 +1,23 @@
 #include "stock.h"
 #include <QDebug>
 
+// Random number gen seeding
+random_device rd;
+mt19937 gen(rd());
+
 // Constructor
-Stock::Stock(string name, string abbreviation, float currPrice, int numShares)
-    : name(name), abbreviation(abbreviation), currPrice(currPrice), numShares(numShares) {}
+Stock::Stock(string name, string abbreviation, int numShares, float initPrice)
+    : name(name), abbreviation(abbreviation), numShares(numShares), initPrice(initPrice), currPrice(initPrice), priceHistory{initPrice} {
+
+    uniform_real_distribution<float> meanDist(0.9, 1.1);
+    float meanMod = meanDist(gen);
+    meanPrice = initPrice * meanMod;
+
+    uniform_real_distribution<float> volDist (0.75, 1.1);
+    float volMod = volDist(gen);
+    float scale = 10 / sqrt(meanPrice);
+    volatility = ((meanPrice/2) * scale) * volMod;
+}
 
 // Getters & Setters
 string Stock::getName() {
@@ -26,31 +40,53 @@ int Stock::getNumShares() {
     return numShares;
 }
 
+void Stock::setNumShares(int numShares) {
+    this->numShares = numShares;
+}
+
 vector<float> Stock::getPriceHistory() {
     return priceHistory;
 }
 
-// TODO: ADD PROPER PRICE INCREASE/DECREASE FORMULA/ALGORITHM (BROWNIAN MOTION, MEAN REVERTING, JUMP DIFFUSION)
-// Function to get price multiplier
-float Stock::priceChange() {
+float Stock::getInitPrice() {
+    return initPrice;
+}
 
-    // Random value between 0.005 and 0.03
-    float x = (rand() % 300 + 50) / 10000.0f;
+float Stock::getMeanPrice() {
+    return initPrice;
+}
 
-    // Generates rand num -0.03 and 0.03
-    float y = (rand() % 60 - 30) / 1000.0f;
+float Stock::getVolatility() {
+    return initPrice;
+}
 
-    // Generates rand num -0.25 to 0.25
-    float z = (rand() % 501 - 250) / 1000.0f;
+// Helper function to generate random distribution
+float generateRandomDist(float mean, float stdDev) {
+    // Move device seeding out
+    normal_distribution<float> dist(mean, stdDev);
+    return dist(gen);
+}
 
-    float marketEvent = (rand() % 100 < 5) ? z : 0.0f;
-    return 1 + (x + y + marketEvent);
+// Function which uses the Ornstein Uhlenbeck means reverting process to determine the price of a stock
+float Stock::ornsteinUhlenbeck(float timeStep) {
+
+    // Standard dev. of value after 1 step
+    float var = pow(volatility, 2) / (reversionRate * 2) * (1 - exp(-2 * reversionRate * timeStep));
+    float stdDev = sqrt(var);
+
+    // Mean of next value
+    float mean = initPrice * exp(-reversionRate * timeStep) + meanPrice * (1 - exp(-reversionRate * timeStep));
+
+    // Sample next value from normal dist
+    float newPrice = generateRandomDist(mean, stdDev);
+
+    // Round to 2 decimal places
+    return round(newPrice * 100.0f) / 100.0f;
 }
 
 // Function to update stock price
 void Stock::updatePrice() {
-    float change = priceChange();
-    currPrice = max(0.01f, currPrice * change);
+    currPrice = ornsteinUhlenbeck(0.01);
     priceHistory.push_back(currPrice);
-    qInfo() << QString::number(currPrice);
+    qInfo() << abbreviation << "-" << QString::number(currPrice);
 }

@@ -1,4 +1,4 @@
-QT       += core gui
+QT += core gui charts widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,12 +13,16 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     stock.cpp \
+    stockcard.cpp \
+    stockgraph.cpp \
     userportfolio.cpp
 
 HEADERS += \
     game.h \
     mainwindow.h \
     stock.h \
+    stockcard.h \
+    stockgraph.h \
     userportfolio.h
 
 FORMS += \
